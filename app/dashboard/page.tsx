@@ -1,9 +1,5 @@
-import { CalendarComponent } from "../components/calendar";
-
+import { DashboardCards } from "../components/dashboard-cards";
 export default function Dashboard() {
-	return (
-		<div className="w-full">
-			<CalendarComponent />
-		</div>
-	);
+    
+	return <DashboardCards />;
 }
