@@ -32,8 +32,10 @@ export default function RootLayout({
 					suppressContentEditableWarning={true}
 					className={`${geistSans.variable} ${geistMono.variable} antialiased`}
 				>
-					<NavBar></NavBar>
-					{children}
+					<div className="h-14 fixed top-0 left-0 right-0 z-50">
+						<NavBar></NavBar>
+					</div>
+					<div className="pt-16">{children}</div>
 				</body>
 			</html>
 		</ClerkProvider>
