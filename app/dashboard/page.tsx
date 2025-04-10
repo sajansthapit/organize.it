@@ -1,8 +1,12 @@
+import { DashboardCards } from "../components/dashboard-cards";
+import { EventForm } from "../components/events-form";
 export default function Dashboard() {
 	return (
-		<div className="min-h-screen flex flex-col justify-center items-center">
-			<h1 className="text-2xl font-bold">Dashboard</h1>
-			<p className="mt-4">Welcome to your dashboard!</p>
+		<div className="flex flex-col gap-4">
+			<DashboardCards />
+			<div className="p-12">
+				<EventForm />
+			</div>
 		</div>
 	);
 }
