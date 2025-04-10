@@ -4,8 +4,8 @@ export default function Dashboard() {
 	return (
 		<div className="flex flex-col gap-4">
 			<DashboardCards />
-			<div className="p-12">
-				<EventForm />
+			<div className="p-8">
+				<EventForm eventData="" />
 			</div>
 		</div>
 	);

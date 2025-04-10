@@ -5,5 +5,5 @@ export type Events = {
 	date: string;
 	location: string;
 	createdAt: string;
-	createdBy: string;
+	createdBy: number;
 };

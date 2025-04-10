@@ -21,7 +21,7 @@ export default function CalendarPage() {
 							<DialogTitle></DialogTitle>
 							<DialogDescription></DialogDescription>
 						</DialogHeader>
-						<EventForm />
+						<EventForm eventData="null" />
 					</DialogContent>
 				</Dialog>
 			</div>

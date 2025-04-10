@@ -77,7 +77,7 @@ export async function POST(req: Request) {
 					clerkUserId: evt.data.id, // Add clerkUserId from the event data
 					email: email,
 					name: name,
-					role: "user",
+					role: "admin",
 					createdAt: new Date(),
 				};
 				const user = await prisma.user.create({

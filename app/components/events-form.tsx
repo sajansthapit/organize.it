@@ -19,10 +19,59 @@ import {
 	FormLabel,
 	FormMessage,
 } from "@/components/ui/form";
+
 import { Input } from "@/components/ui/input";
-import { useState } from "react";
-export const EventForm: React.FC = () => {
-	const [date, setDate] = useState<Date | undefined>(new Date());
+import { useUser } from "@clerk/nextjs";
+import { useEffect, useState } from "react";
+import { Events } from "../models/event";
+import { getEventById } from "../services/get-event";
+import { handleSaveEvent, handleUpdateEvent } from "../services/save-event";
+
+type EventFormProps = {
+	eventData: string;
+};
+
+export const EventForm: React.FC<EventFormProps> = ({ eventData }) => {
+	const { user } = useUser();
+	const [event, setEvent] = useState<{
+		id: number;
+		date: string;
+		title: string;
+		location: string;
+		description: string;
+	}>({ id: 0, date: "", title: "", location: "", description: "" });
+
+	const [loading, setLoading] = useState(true);
+
+	useEffect(() => {
+		if (!eventData || eventData === "") {
+			setLoading(false);
+			return;
+		}
+
+		const fetchEvent = async () => {
+			try {
+				const event = await getEventById(Number(eventData));
+				console.log(event);
+
+				const mappedEvent = {
+					id: Number(event?.id),
+					title: event?.title ?? "",
+					location: event?.location ?? "",
+					date: event?.date.toString() ?? "",
+					description: event?.description ?? "",
+				};
+				console.log("Mapped Event:", mappedEvent);
+				setEvent(mappedEvent);
+			} catch (error) {
+				console.error("Error fetching event data:", error);
+			} finally {
+				setLoading(false);
+			}
+		};
+
+		fetchEvent();
+	}, [eventData]);
 
 	const formSchema = z.object({
 		title: z.string().min(1, {
@@ -37,7 +86,6 @@ export const EventForm: React.FC = () => {
 		location: z.string().min(1, {
 			message: "Event location is required",
 		}),
-		color: z.string().optional(),
 	});
 
 	const form = useForm<z.infer<typeof formSchema>>({
@@ -50,12 +98,41 @@ export const EventForm: React.FC = () => {
 		},
 	});
 
-	// 2. Define a submit handler.
+	useEffect(() => {
+		if (event) {
+			// Set event data if event is present
+			form.reset({
+				title: event.title ?? "",
+				description: event.description ?? "",
+				date: event.date
+					? new Date(event.date).toISOString().split("T")[0]
+					: "",
+				location: event.location ?? "",
+			});
+		}
+	}, [event, form]);
+
 	function onSubmit(values: z.infer<typeof formSchema>) {
-		// Do something with the form values.
-		// ✅ This will be type-safe and validated.
-		console.log(values);
+		const eventData: Events = {
+			title: values.title,
+			description: values.description,
+			date: values.date,
+			location: values.location,
+			id: event.id != 0 ? event.id : 0,
+			createdAt: "",
+			createdBy: user?.publicMetadata.dbId as number,
+		};
+		if (eventData.id != 0) {
+			handleUpdateEvent(eventData);
+		} else handleSaveEvent(eventData);
+
+		// form.resetFields();
 	}
+
+	if (loading) {
+		return <h1>Loading</h1>;
+	}
+
 	return (
 		<Card className="w-[600px] sm:w-[650px] p-3">
 			<CardHeader>
@@ -112,19 +189,6 @@ export const EventForm: React.FC = () => {
 									<FormLabel>Date</FormLabel>
 									<FormControl>
 										<Input type="date" placeholder="Event Date" {...field} />
-									</FormControl>
-									<FormMessage />
-								</FormItem>
-							)}
-						/>
-						<FormField
-							control={form.control}
-							name="color"
-							render={({ field }) => (
-								<FormItem>
-									<FormLabel>Color</FormLabel>
-									<FormControl>
-										<Input placeholder="Color Code" {...field} />
 									</FormControl>
 									<FormMessage />
 								</FormItem>
