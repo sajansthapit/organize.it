@@ -149,6 +149,10 @@ const config = {
       {
         "fromEnvVar": null,
         "value": "rhel-openssl-3.0.x"
+      },
+      {
+        "fromEnvVar": null,
+        "value": "rhel-openssl-1.0.x"
       }
     ],
     "previewFeatures": [],
@@ -175,8 +179,8 @@ const config = {
       }
     }
   },
-  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider      = \"prisma-client-js\"\n  output        = \"../app/generated/prisma\"\n  binaryTargets = [\"native\", \"rhel-openssl-3.0.x\"]\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel Event {\n  id          Int      @id @default(autoincrement())\n  title       String\n  description String\n  date        DateTime\n  location    String\n  createdAt   DateTime\n  createdBy   Int\n  user        User     @relation(fields: [createdBy], references: [id])\n}\n\nmodel User {\n  id          Int      @id @default(autoincrement())\n  clerkUserId String   @unique\n  email       String   @unique\n  name        String\n  role        String\n  createdAt   DateTime\n  Event       Event[]\n}\n",
-  "inlineSchemaHash": "ea8c20dc14f4056b44558f76ae82d2b77752eeb96c51cda38bd85d52c73080b4",
+  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider      = \"prisma-client-js\"\n  output        = \"../app/generated/prisma\"\n  binaryTargets = [\"native\", \"rhel-openssl-3.0.x\", \"rhel-openssl-1.0.x\"]\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel Event {\n  id          Int      @id @default(autoincrement())\n  title       String\n  description String\n  date        DateTime\n  location    String\n  createdAt   DateTime\n  createdBy   Int\n  user        User     @relation(fields: [createdBy], references: [id])\n}\n\nmodel User {\n  id          Int      @id @default(autoincrement())\n  clerkUserId String   @unique\n  email       String   @unique\n  name        String\n  role        String\n  createdAt   DateTime\n  Event       Event[]\n}\n",
+  "inlineSchemaHash": "a25c47e51ed4b067685179432e1bd8d76921c0385ffc592db0c390a5293672b7",
   "copyEngine": true
 }
 config.dirname = '/'
