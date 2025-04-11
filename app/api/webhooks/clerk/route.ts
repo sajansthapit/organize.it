@@ -2,8 +2,8 @@ import { WebhookEvent } from "@clerk/nextjs/server";
 import { headers } from "next/headers";
 import { Webhook } from "svix";
 
+import { PrismaClient } from "@/app/generated/prisma";
 import { syncClerkUserMetaData } from "@/app/services/clerk";
-import { PrismaClient } from "../../../generated/prisma";
 
 export async function POST(req: Request) {
 	const SIGNING_SECRET = process.env.CLERK_WEBHOOK_SECRET;
