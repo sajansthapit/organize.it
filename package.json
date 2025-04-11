@@ -6,7 +6,7 @@
 		"dev": "next dev",
 		"postinstall": "prisma generate",
 		"build": "prisma generate && next build --no-lint && node copy-binary.js",
-		"vercel-build": "prisma generate migrate && next build --no-lint",
+		"vercel-build": "prisma generate migrate && next build --no-lint && node copy-binary.js",
 		"start": "next start",
 		"lint": "next lint"
 	},
